@@ -48,13 +48,26 @@
         );
     }
 
+    function input_cart() {
+        global $wpdb;
+        if(isset($_POST['add_to_cart'])){
+            $post_id = $_POST['id'];
+            $user_id = get_current_user_id();
+
+            $wpdb->query("INSERT INTO wp_add_to_cart(user_id, post_id) VALUES ($user_id, $post_id)");
+
+            $wpdb->query("INSERT INTO wp_order(user_id, post_id, order_date, order_status) VALUES ($user_id, $post_id, NOW(), 'recieved')");
+        }
+    }
+
  
     function add_to_cart($content){
+        $id = get_the_ID();
         if(in_the_loop() && is_main_query() ){
                 return $content . "
                 <form method=POST>
                     <input name=id type=hidden value=$id>
-                    <button name=buy>Add to cart</button>
+                    <button name=add_to_cart>Add to cart</button>
                 </form>
                 ";
         }
@@ -69,21 +82,52 @@
         $table_name = $wpdb->prefix . "add_to_cart";
         $user_table = $wpdb->prefix . "users";
         $post_table = $wpdb->prefix . "posts";
-        $meta_table = $wpdb->prefix . "postmeta";
 
         $sql = "CREATE TABLE $table_name (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT,
                 user_id BIGINT(20) UNSIGNED NOT NULL,
                 post_id BIGINT(20) UNSIGNED NOT NULL,
-                meta_id BIGINT(20) UNSIGNED NOT NULL,
                 PRIMARY KEY  (id),
                 FOREIGN KEY (user_id) REFERENCES $user_table(ID),
-                FOREIGN KEY (post_id) REFERENCES $post_table(ID),
-                FOREIGN KEY (meta_id) REFERENCES $meta_table(meta_id)
+                FOREIGN KEY (post_id) REFERENCES $post_table(ID)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
+    }
+
+    
+    function order_register(){
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
+        $table_name = $wpdb->prefix . "order";
+        $user_table = $wpdb->prefix . "users";
+        $post_table = $wpdb->prefix . "posts";
+
+        $sql = "CREATE TABLE $table_name (
+                id BIGINT(20) NOT NULL AUTO_INCREMENT,
+                user_id BIGINT(20) UNSIGNED NOT NULL,
+                post_id BIGINT(20) UNSIGNED NOT NULL,
+                order_date DATETIME,
+                order_status VARCHAR(20),
+                PRIMARY KEY  (id),
+                FOREIGN KEY (user_id) REFERENCES $user_table(ID),
+                FOREIGN KEY (post_id) REFERENCES $post_table(ID)
+        ) $charset_collate;";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+    }
+
+
+
+    function deactivation() {
+        global $wpdb;
+        $table_name = $wpdb->prefix . "add_to_cart";
+        $table_name_order = $wpdb->prefix . "order";
+        $wpdb->query("DROP TABLE IF EXISTS $table_name");
+        $wpdb->query("DROP TABLE IF EXISTS $table_name_order");
     }
 
 
@@ -93,5 +137,8 @@
     add_action('save_post', 'save_products');
     add_action('init', 'cpt_order');
     add_action('add_meta_boxes', 'adding_the_meta_boxes');
+    add_action('init', 'input_cart');
 
     register_activation_hook(__FILE__, 'add_to_cart_register');
+    register_activation_hook(__FILE__, 'order_register');
+    register_deactivation_hook(__FILE__, 'deactivation');
