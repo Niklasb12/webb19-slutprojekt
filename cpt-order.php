@@ -137,6 +137,9 @@
    
       //  Load Widget
       require_once(plugin_dir_path(__FILE__). '/includes/order-widget.php');
+
+      //Load Sidebar
+      require_once(plugin_dir_path(__FILE__). '/includes/sidebar.php');
   
       // Register Widget
       function register_order_widget(){
