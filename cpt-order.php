@@ -1,8 +1,10 @@
 <?php
-
-    /*
-        Plugin Name: Products
-    */
+/*
+    Plugin Name: Products
+    Descripton: Ordersystem for products
+    Version: 2.0
+    Author: Niklas Borg & Amanda Jakobsson
+*/
 
     function cpt_order() {
         register_post_type(
@@ -142,3 +144,9 @@
     register_activation_hook(__FILE__, 'add_to_cart_register');
     register_activation_hook(__FILE__, 'order_register');
     register_deactivation_hook(__FILE__, 'deactivation');
+
+
+    // // Load scripts
+    require_once(plugin_dir_path(__FILE__). '/includes/order-scripts.php');
+   
+    

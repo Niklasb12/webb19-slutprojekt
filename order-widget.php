@@ -23,7 +23,7 @@ Plugin Name: Order widget
         global $wpdb;
         $id = get_the_ID(); 
 
-        "<form method=POST>
+        echo "<form method=POST>
         <button> Order </button>
         <input type=hidden name=order value=$id></input>
         </form>"; 
