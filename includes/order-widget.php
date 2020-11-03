@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Order widget
+    Order widget
 */
 
  class ow_widget extends WP_Widget{
