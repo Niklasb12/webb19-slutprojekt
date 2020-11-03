@@ -132,6 +132,17 @@
         $wpdb->query("DROP TABLE IF EXISTS $table_name_order");
     }
 
+      // Load scripts
+      require_once(plugin_dir_path(__FILE__). '/includes/order-scripts.php');
+   
+      //  Load Widget
+      require_once(plugin_dir_path(__FILE__). '/includes/order-widget.php');
+  
+      // Register Widget
+      function register_order_widget(){
+          register_widget('ow_widget');
+      }
+
 
     add_filter('the_content', 'add_to_cart');
 
@@ -140,13 +151,12 @@
     add_action('init', 'cpt_order');
     add_action('add_meta_boxes', 'adding_the_meta_boxes');
     add_action('init', 'input_cart');
+    add_action('widgets_init', 'register_order_widget');
 
     register_activation_hook(__FILE__, 'add_to_cart_register');
     register_activation_hook(__FILE__, 'order_register');
     register_deactivation_hook(__FILE__, 'deactivation');
 
 
-    // // Load scripts
-    require_once(plugin_dir_path(__FILE__). '/includes/order-scripts.php');
-   
-    
+  
+  
