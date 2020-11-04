@@ -20,18 +20,4 @@ function my_register_sidebars() {
         );
     }
 
-
-    // function register_script_sidebar() { 
-    //     wp_register_style( 'sidebar', plugins_url('assets/style.css', __FILE__));
-    // }
-
-    // function enqueue_style_sidebar(){
-    //     wp_enqueue_style( 'sidebar' );
-    // }
-
-
-    // add_action('init', 'register_script_sidebar');
-    // add_action('wp_enqueue_scripts', 'enqueue_style_sidebar');
-
-    
-    add_action( 'widgets_init', 'my_register_sidebars' );
+add_action( 'widgets_init', 'my_register_sidebars' );
