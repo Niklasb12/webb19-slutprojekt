@@ -26,7 +26,7 @@
         echo "<form method=POST>
         <button> Order </button>
         <input type=hidden name=order value=$id></input>
-        </form>"; 
+        </form>";
 
         
         echo $args['after_widget'];
