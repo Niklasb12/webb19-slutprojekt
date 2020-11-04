@@ -57,6 +57,14 @@
             $user_id = get_current_user_id();
 
             $wpdb->query("INSERT INTO wp_add_to_cart(user_id, post_id) VALUES ($user_id, $post_id)");
+        }
+    }
+
+    function input_order() {
+        global $wpdb;
+        if(isset($_POST['order'])){
+            $post_id = $_POST['id'];
+            $user_id = get_current_user_id();
 
             $wpdb->query("INSERT INTO wp_order(user_id, post_id, order_date, order_status) VALUES ($user_id, $post_id, NOW(), 'recieved')");
         }
@@ -154,6 +162,7 @@
     add_action('init', 'cpt_order');
     add_action('add_meta_boxes', 'adding_the_meta_boxes');
     add_action('init', 'input_cart');
+    add_action('init', 'input_order');
     add_action('widgets_init', 'register_order_widget');
 
     register_activation_hook(__FILE__, 'add_to_cart_register');
