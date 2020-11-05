@@ -33,12 +33,13 @@
                     <option value=delivered> delivered </option>
                 </select> <br>
                 <form method=POST>
-                    <input name=id type=hidden value=$order->order_id>
-                    <button name=Save>Save</button>
+                    <input name=id type=hidden value=$order->id>
+                    <button name=save>Save</button>
                 </form>
                 </div>
                 ";
-        }
+
+            }
     }
 
 ?>
