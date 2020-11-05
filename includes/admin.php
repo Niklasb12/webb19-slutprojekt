@@ -16,15 +16,29 @@
 
     // mt_toplevel_page() displays the page content for the custom Test Toplevel menu
     function order_status_page() {
+        global $wpdb;
         // echo "<h2>" . __( 'Test Toplevel', 'menu-test' ) . "</h2>";
         echo "<h1> Orders </h1>";
+        $results_orders = $wpdb->get_results("SELECT * FROM wp_order ORDER BY wp_order.order_date DESC");
 
-        echo "<select>
-                <option> recieved </option>
-                <option> canceled </option>
-                <option> shipped </option>
-                <option> delivered </option>
-            </select>";
+        foreach($results_orders as $order){
+            echo "<div style='display: flex;'><div style='display: flex; flex-direction: column; margin: 40px;'>";
+            echo $order->order_date . "<br>" . $order->order_status . "<br>";
+
+            echo "
+                <select>
+                    <option value=recieved> recieved </option>
+                    <option value=canceled> canceled </option>
+                    <option value=shipped> shipped </option>
+                    <option value=delivered> delivered </option>
+                </select> <br>
+                <form method=POST>
+                    <input name=id type=hidden value=$order->order_id>
+                    <button name=Save>Save</button>
+                </form>
+                </div>
+                ";
+        }
     }
 
 ?>
