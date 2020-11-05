@@ -6,6 +6,7 @@
     Author: Niklas Borg & Amanda Jakobsson
 */
 
+    // Query
     function input_cart() {
         global $wpdb;
         if(isset($_POST['add_to_cart'])){
@@ -36,7 +37,9 @@
                 $wpdb->query("INSERT INTO wp_order_post(add_to_cart_id, order_id) VALUES ($result->id, $order_id)");
             }
 
+            
             // $wpdb->query("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.user_id=$user_id");
+            
             
         }
     }
@@ -54,21 +57,22 @@
         return $content;
     }
 
+    // Tables
     function add_to_cart_register(){
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
-        $table_name = $wpdb->prefix . "add_to_cart";
-        $user_table = $wpdb->prefix . "users";
-        $post_table = $wpdb->prefix . "posts";
+        $table_name      = $wpdb->prefix . "add_to_cart";
+        $user_table      = $wpdb->prefix . "users";
+        $post_table      = $wpdb->prefix . "posts";
 
         $sql = "CREATE TABLE $table_name (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT,
                 user_id BIGINT(20) UNSIGNED NOT NULL,
                 post_id BIGINT(20) UNSIGNED NOT NULL,
                 PRIMARY KEY  (id),
-                FOREIGN KEY (user_id) REFERENCES $user_table(ID),
-                FOREIGN KEY (post_id) REFERENCES $post_table(ID)
+                FOREIGN KEY (user_id) REFERENCES $user_table(ID) ON DELETE CASCADE,
+                FOREIGN KEY (post_id) REFERENCES $post_table(ID) ON DELETE CASCADE
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -79,8 +83,8 @@
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
-        $table_name = $wpdb->prefix . "order";
-        $user_table = $wpdb->prefix . "users";
+        $table_name      = $wpdb->prefix . "order";
+        $user_table      = $wpdb->prefix . "users";
 
         $sql = "CREATE TABLE $table_name (
                 id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -88,7 +92,7 @@
                 order_date DATETIME,
                 order_status VARCHAR(20),
                 PRIMARY KEY  (id),
-                FOREIGN KEY (user_id) REFERENCES $user_table(ID)
+                FOREIGN KEY (user_id) REFERENCES $user_table(ID) ON DELETE CASCADE
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -98,18 +102,18 @@
     function order_post_register() {
         global $wpdb;
 
-        $charset_collate = $wpdb->get_charset_collate();
-        $table_name = $wpdb->prefix . "order_post";
+        $charset_collate   = $wpdb->get_charset_collate();
+        $table_name        = $wpdb->prefix . "order_post";
         $add_to_cart_table = $wpdb->prefix . "add_to_cart";
-        $order_table = $wpdb->prefix . "order";
+        $order_table       = $wpdb->prefix . "order";
 
         $sql = "CREATE TABLE $table_name (
             id BIGINT(20) NOT NULL AUTO_INCREMENT,
             add_to_cart_id BIGINT(20) NOT NULL,
             order_id BIGINT(20) NOT NULL,
             PRIMARY KEY (id),
-            FOREIGN KEY (add_to_cart_id) REFERENCES $add_to_cart_table(id),
-            FOREIGN KEY (order_id) REFERENCES $order_table(id)
+            FOREIGN KEY (add_to_cart_id) REFERENCES $add_to_cart_table(id) ON DELETE CASCADE,
+            FOREIGN KEY (order_id) REFERENCES $order_table(id) ON DELETE CASCADE
 
         ) $charset_collate;";
 
@@ -117,8 +121,23 @@
         dbDelta( $sql );
     }
 
+    // Register Widget
+    function register_order_widget(){
+        register_widget('ow_widget');
+    }
 
- 
+    // Deactivate
+    function deactivation() {
+        global $wpdb;
+        $table_name            = $wpdb->prefix . "add_to_cart";
+        $table_name_order      = $wpdb->prefix . "order";
+        $table_name_order_post = $wpdb->prefix . "order_post";
+        $wpdb->query("DROP TABLE IF EXISTS $table_name_order_post");
+        $wpdb->query("DROP TABLE IF EXISTS $table_name");
+        $wpdb->query("DROP TABLE IF EXISTS $table_name_order");
+        
+    }
+
 
     // Load scripts
     require_once(plugin_dir_path(__FILE__). '/includes/order-scripts.php');
@@ -140,30 +159,8 @@
 
     //Load Deactivation
     // require_once(plugin_dir_path(__FILE__). '/includes/deactivation.php');
-
-      // Register Widget
-      function register_order_widget(){
-          register_widget('ow_widget');
-      }
-
-
+    
     add_filter('the_content', 'add_to_cart');
-
-    function deactivation() {
-        global $wpdb;
-        $table_name = $wpdb->prefix . "add_to_cart";
-        $table_name_order = $wpdb->prefix . "order";
-        $table_name_order_post = $wpdb->prefix . "order_post";
-        $wpdb->query("DROP TABLE IF EXISTS $table_name_order_post");
-        $wpdb->query("DROP TABLE IF EXISTS $table_name");
-        $wpdb->query("DROP TABLE IF EXISTS $table_name_order");
-        
-    }
-    
-    
-    register_deactivation_hook(__FILE__, 'deactivation');
-
-
   
     add_action('init', 'input_cart');
     add_action('init', 'input_order');
@@ -172,6 +169,7 @@
     register_activation_hook(__FILE__, 'add_to_cart_register');
     register_activation_hook(__FILE__, 'order_register');
     register_activation_hook(__FILE__, 'order_post_register');
+    register_deactivation_hook(__FILE__, 'deactivation');
     
 
 
