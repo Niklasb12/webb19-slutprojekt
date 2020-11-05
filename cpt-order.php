@@ -24,11 +24,18 @@
 
             $results = $wpdb->get_results("SELECT * FROM wp_add_to_cart WHERE wp_add_to_cart.user_id=$user_id");
 
+            $results_order = $wpdb->get_results("SELECT * FROM wp_order WHERE wp_order.user_id=$user_id");
+
             
             $wpdb->query("INSERT INTO wp_order(user_id, order_date, order_status) VALUES ($user_id, NOW(), 'recieved')");
 
+            
+            foreach($results_order as $order){
+                
+            }
+
             foreach($results as $result) {
-                $wpdb->query("INSERT INTO wp_order_post(post_id) VALUES ($result->post_id");
+                $wpdb->query("INSERT INTO wp_order_post(add_to_cart_id, order_id) VALUES ($result->id");
             }
 
 
@@ -39,8 +46,6 @@
         }
     }
 
-
- 
     function add_to_cart($content){
         $id = get_the_ID();
         if(in_the_loop() && is_main_query() ){
@@ -53,7 +58,6 @@
         }
         return $content;
     }
-
 
     function add_to_cart_register(){
         global $wpdb;
@@ -75,7 +79,6 @@
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
         dbDelta( $sql );
     }
-
     
     function order_register(){
         global $wpdb;
@@ -97,19 +100,22 @@
         dbDelta( $sql );
     }
 
-
     function order_post_register() {
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
         $table_name = $wpdb->prefix . "order_post";
         $add_to_cart_table = $wpdb->prefix . "add_to_cart";
+        $order_table = $wpdb->prefix . "order";
 
         $sql = "CREATE TABLE $table_name (
             id BIGINT(20) NOT NULL AUTO_INCREMENT,
-            add_to_cart_id BIGINT(20) UNSIGNED NOT NULL,
+            add_to_cart_id BIGINT(20) NOT NULL,
+            order_id BIGINT(20) NOT NULL,
             PRIMARY KEY (id),
-            FOREIGN KEY (add_to_cart_id) REFERENCES $add_to_cart_table(id)
+            FOREIGN KEY (add_to_cart_id) REFERENCES $add_to_cart_table(id),
+            FOREIGN KEY (order_id) REFERENCES $order_table(id)
+
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -153,9 +159,10 @@
         $table_name = $wpdb->prefix . "add_to_cart";
         $table_name_order = $wpdb->prefix . "order";
         $table_name_order_post = $wpdb->prefix . "order_post";
+        $wpdb->query("DROP TABLE IF EXISTS $table_name_order_post");
         $wpdb->query("DROP TABLE IF EXISTS $table_name");
         $wpdb->query("DROP TABLE IF EXISTS $table_name_order");
-        $wpdb->query("DROP TABLE IF EXISTS $table_name_order_post");
+        
     }
     
     
