@@ -23,7 +23,7 @@
 
         foreach($results_orders as $order){
             echo "<div style='display: flex;'><div style='display: flex; flex-direction: column; margin: 40px;'>";
-            echo $order->order_date . "<br>" . $order->order_status . "<br>";
+            echo $order->order_date . "<br>" . $order->order_status . " <br>";
 
             echo "
                 <select>
