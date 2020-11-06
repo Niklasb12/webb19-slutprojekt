@@ -45,9 +45,11 @@
     }
 
     function add_to_cart($content){
+        global $wpdb;
         $id = get_the_ID();
+
         if(in_the_loop() && is_main_query() ){
-                return $content . "
+                return $content . "<h5>" . get_post_meta($id, 'price', true ) . " Kr</h5>
                 <form method=POST>
                     <input name=id type=hidden value=$id>
                     <button name=add_to_cart>Add to cart</button>

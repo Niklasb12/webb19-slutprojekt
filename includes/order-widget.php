@@ -32,15 +32,13 @@
         echo "<h4>" . $instance["title"] . "</h4>";
 
         foreach($results_cart as $cart) {
-
             echo "<div>
                     <p>" . $cart->post_title . " " . $cart->meta_value .  " Kr</p>
                 </div>";
             array_push($total, intval($cart->meta_value));
-
         }
 
-        echo "<p>Total: " . array_sum($total) . " </p>";
+        echo "<div style='border-top: 1px black solid; width: 10%;'><p>Total: " . array_sum($total) . " Kr</p></div>";
 
         echo "<form method=POST>
         <button> Order </button>
