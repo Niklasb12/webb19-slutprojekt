@@ -157,7 +157,7 @@
     //Load Meta Boxes
     require_once(plugin_dir_path(__FILE__). '/includes/meta_boxes.php');
 
-    //Load Deactivation
+    // Load Deactivation
     // require_once(plugin_dir_path(__FILE__). '/includes/deactivation.php');
     
     add_filter('the_content', 'add_to_cart');
