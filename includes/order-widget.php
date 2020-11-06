@@ -21,13 +21,32 @@
     function widget($args, $instance){
         echo $args['before_widget'];
         global $wpdb;
-        $id = get_the_ID(); 
+        $id = get_the_ID();
+        $user_id = get_current_user_id(); 
+
+        $results_cart = $wpdb->get_results("SELECT wp_posts.post_title, wp_postmeta.meta_value FROM wp_add_to_cart INNER JOIN wp_posts ON wp_add_to_cart.post_id = wp_posts.ID INNER JOIN wp_postmeta ON wp_add_to_cart.post_id = wp_postmeta.post_id WHERE wp_add_to_cart.user_id = $user_id AND wp_postmeta.meta_key = 'price'");
+
+
+        $total = array();
+
+        echo "<h4>" . $instance["title"] . "</h4>";
+
+        foreach($results_cart as $cart) {
+
+            echo "<div>
+                    <p>" . $cart->post_title . " " . $cart->meta_value .  " Kr</p>
+                </div>";
+            array_push($total, intval($cart->meta_value));
+
+        }
+
+        echo "<p>Total: " . array_sum($total) . " </p>";
 
         echo "<form method=POST>
         <button> Order </button>
         <input type=hidden name=order value=$id></input>
         </form>";
-
+        
         
         echo $args['after_widget'];
     }

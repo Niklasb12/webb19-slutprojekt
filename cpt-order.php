@@ -38,7 +38,7 @@
             }
 
             
-            // $wpdb->query("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.user_id=$user_id");
+                $wpdb->query("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.user_id=$user_id");
             
             
         }

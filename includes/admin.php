@@ -19,14 +19,23 @@
         global $wpdb;
         // echo "<h2>" . __( 'Test Toplevel', 'menu-test' ) . "</h2>";
         echo "<h1> Orders </h1>";
-        $results_orders = $wpdb->get_results("SELECT * FROM wp_order ORDER BY wp_order.order_date DESC");
+        $results_orders = $wpdb->get_results("SELECT * FROM wp_order ORDER BY wp_order.order_date DESC LIMIT 10");
 
     
 
         foreach($results_orders as $order){
             echo "<div style='display: flex;'>
                     <div style='display: flex; flex-direction: column; margin: 40px;'>";
-            echo $order->order_date . "<br>" . $order->order_status . " <br>";
+                    if($order->order_status == "recieved" || $order->order_status == "shipped") {
+                        echo $order->order_date . "<br>" . 
+                        "<p style='color: blue;'>" . $order->order_status . "</p> <br>";
+                    }elseif($order->order_status == "canceled") {
+                        echo $order->order_date . "<br>" .
+                        "<p style='color: red;'>" . $order->order_status . "</p> <br>";
+                    }else{
+                        echo $order->order_date . "<br>" .
+                        "<p style='color: green;'>" . $order->order_status . "</p> <br>";
+                    }
 
             
             
@@ -44,22 +53,25 @@
                 </div>";
 
                 
-                if(isset($_POST['id'])){
-                    
-
-                    $select_option = $_POST['select_order_status'];
-                    
-                    $wpdb->query("UPDATE wp_order
-                    SET order_status = 'hårdkodat'");
-           
-           
-                }
                 
-              
-
+                echo $order->id ;
+                
             }
-            echo $select_option ;
+            
     }
+
+    function update_order_status() {
+        global $wpdb;
+        if(isset($_POST['save'])){
+            $select_option = $_POST['select_order_status'];
+            $id = $_POST['id'];
+            
+            $wpdb->query("UPDATE wp_order
+            SET wp_order.order_status = '$select_option' WHERE $id = wp_order.id ");
+        }
+    }
+
+    add_action('init', 'update_order_status');
 
     // function input_status(){
     //     global $wpdb;
