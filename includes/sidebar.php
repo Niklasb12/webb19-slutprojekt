@@ -1,9 +1,7 @@
 <?php
-
 /*
     Sidebar
 */
-
 
 function my_register_sidebars() {
     /* Register the 'primary' sidebar. */
