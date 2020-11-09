@@ -8,10 +8,7 @@ function order_add_scripts(){
     
 }
 
-// function add_editor_scripts(){
-
-// }
-// add_action();
+add_action('admin_enqueue_scripts', 'order_add_scripts');
 
 add_action('wp_enqueue_scripts', 'order_add_scripts');
 ?>
