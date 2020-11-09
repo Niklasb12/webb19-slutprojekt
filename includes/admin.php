@@ -20,9 +20,18 @@
         // echo "<h2>" . __( 'Test Toplevel', 'menu-test' ) . "</h2>";
         echo "<h1> Orders </h1>";
         $results_orders = $wpdb->get_results("SELECT * FROM wp_order ORDER BY wp_order.order_date DESC LIMIT 10");
-    
 
+
+       
         foreach($results_orders as $order){
+            
+            $results_products = $wpdb->get_results("SELECT wp_posts.post_title FROM wp_order_post INNER JOIN wp_posts ON wp_order_post.post_id=wp_posts.id WHERE $order->id=wp_order_post.order_id");
+
+        
+            foreach($results_products as $product){
+                echo "<div>" . $product->post_title . "</div>";
+            }
+            
             echo "<div style='display: flex;'>
                     <div style='display: flex; flex-direction: column; margin: 40px;'>";
                     if($order->order_status == "recieved" || $order->order_status == "shipped") {
@@ -71,17 +80,5 @@
     }
 
     add_action('init', 'update_order_status');
-
-    // function input_status(){
-    //     global $wpdb;
-    //     if(isset($_POST['id'])){
-                
-    //      $wpdb->query("UPDATE wp_order
-    //      SET order_status =$order->status");
-
-
-    //     }
-    // }
-    // add_action('init', 'input_status');
 
 ?>
