@@ -34,11 +34,11 @@
             }
 
             foreach($results as $result) {
-                $wpdb->query("INSERT INTO wp_order_post(add_to_cart_id, order_id, post_id) VALUES ($result->id, $order_id, $result->post_id)");
+                $wpdb->query("INSERT INTO wp_order_post(order_id, post_id) VALUES ($order_id, $result->post_id)");
             }
 
             
-                // $wpdb->query("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.id= wp_order_post.add_to_cart_id");
+                $wpdb->query("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.user_id= $user_id");
 
         }
     }
@@ -72,8 +72,8 @@
                 user_id BIGINT(20) UNSIGNED NOT NULL,
                 post_id BIGINT(20) UNSIGNED NOT NULL,
                 PRIMARY KEY  (id),
-                FOREIGN KEY (user_id) REFERENCES $user_table(ID) ON DELETE CASCADE,
-                FOREIGN KEY (post_id) REFERENCES $post_table(ID) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES $user_table(ID),
+                FOREIGN KEY (post_id) REFERENCES $post_table(ID)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -93,7 +93,7 @@
                 order_date DATETIME,
                 order_status VARCHAR(20),
                 PRIMARY KEY  (id),
-                FOREIGN KEY (user_id) REFERENCES $user_table(ID) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES $user_table(ID)
         ) $charset_collate;";
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -105,17 +105,16 @@
 
         $charset_collate   = $wpdb->get_charset_collate();
         $table_name        = $wpdb->prefix . "order_post";
-        $add_to_cart_table = $wpdb->prefix . "add_to_cart";
+        $posts_table       = $wpdb->prefix . "posts";
         $order_table       = $wpdb->prefix . "order";
 
         $sql = "CREATE TABLE $table_name (
             id BIGINT(20) NOT NULL AUTO_INCREMENT,
-            add_to_cart_id BIGINT(20) NOT NULL,
             order_id BIGINT(20) NOT NULL,
-            post_id BIGINT(20) NOT NULL,
+            post_id BIGINT(20) UNSIGNED NOT NULL,
             PRIMARY KEY (id),
-            FOREIGN KEY (add_to_cart_id) REFERENCES $add_to_cart_table(id) ON DELETE CASCADE,
-            FOREIGN KEY (order_id) REFERENCES $order_table(id) ON DELETE CASCADE
+            FOREIGN KEY (post_id) REFERENCES $posts_table(ID),
+            FOREIGN KEY (order_id) REFERENCES $order_table(id)
 
         ) $charset_collate;";
 
