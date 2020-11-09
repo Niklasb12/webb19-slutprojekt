@@ -20,20 +20,19 @@
         // echo "<h2>" . __( 'Test Toplevel', 'menu-test' ) . "</h2>";
         echo "<h1> Orders </h1>";
         $results_orders = $wpdb->get_results("SELECT * FROM wp_order ORDER BY wp_order.order_date DESC LIMIT 10");
-
     
 
         foreach($results_orders as $order){
             echo "<div style='display: flex;'>
                     <div style='display: flex; flex-direction: column; margin: 40px;'>";
                     if($order->order_status == "recieved" || $order->order_status == "shipped") {
-                        echo $order->order_date . "<br>" . 
+                        echo "<p>Order Number: &nbsp" . $order->id . "</p>" . $order->order_date . "<br>" . 
                         "<p style='color: blue;'>" . $order->order_status . "</p> <br>";
                     }elseif($order->order_status == "canceled") {
-                        echo $order->order_date . "<br>" .
+                        echo "<p>Order Number: &nbsp" . $order->id . "</p>" . $order->order_date . "<br>" . 
                         "<p style='color: red;'>" . $order->order_status . "</p> <br>";
                     }else{
-                        echo $order->order_date . "<br>" .
+                        echo "<p>Order Number: &nbsp" . $order->id . "</p>" . $order->order_date . "<br>" . 
                         "<p style='color: green;'>" . $order->order_status . "</p> <br>";
                     }
 
@@ -46,15 +45,15 @@
                             <option value=canceled> canceled </option>
                             <option value=shipped> shipped </option>
                             <option value=delivered> delivered </option>
-                        </select> <br>                                      
+                        </select> 
+                        <br>
+                        <br>                                   
                         <input name=id type=hidden value=$order->id>
                         <button name=save>Save</button>
                     </form>
                 </div>";
 
                 
-                
-                echo $order->id ;
                 
             }
             

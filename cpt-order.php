@@ -34,13 +34,12 @@
             }
 
             foreach($results as $result) {
-                $wpdb->query("INSERT INTO wp_order_post(add_to_cart_id, order_id) VALUES ($result->id, $order_id)");
+                $wpdb->query("INSERT INTO wp_order_post(add_to_cart_id, order_id, post_id) VALUES ($result->id, $order_id, $result->post_id)");
             }
 
             
-                $wpdb->query("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.user_id=$user_id");
-            
-            
+                // $wpdb->query("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.id= wp_order_post.add_to_cart_id");
+
         }
     }
 
@@ -113,6 +112,7 @@
             id BIGINT(20) NOT NULL AUTO_INCREMENT,
             add_to_cart_id BIGINT(20) NOT NULL,
             order_id BIGINT(20) NOT NULL,
+            post_id BIGINT(20) NOT NULL,
             PRIMARY KEY (id),
             FOREIGN KEY (add_to_cart_id) REFERENCES $add_to_cart_table(id) ON DELETE CASCADE,
             FOREIGN KEY (order_id) REFERENCES $order_table(id) ON DELETE CASCADE

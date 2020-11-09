@@ -30,7 +30,7 @@
         $total = array();
 
         echo "<h4>" . $instance["title"] . "</h4>";
-
+        if(!empty($results_cart)) {
         foreach($results_cart as $cart) {
             echo "<div>
                     <p>" . $cart->post_title . " " . $cart->meta_value .  " Kr</p>
@@ -44,6 +44,7 @@
         <button> Order </button>
         <input type=hidden name=order value=$id></input>
         </form>";
+    }
         
         
         echo $args['after_widget'];
