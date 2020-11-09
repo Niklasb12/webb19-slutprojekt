@@ -27,9 +27,9 @@
             
             $results_products = $wpdb->get_results("SELECT wp_posts.post_title FROM wp_order_post INNER JOIN wp_posts ON wp_order_post.post_id=wp_posts.id WHERE $order->id=wp_order_post.order_id");
 
-        
+            echo "<p class='show-items'> Order Items </p>";
             foreach($results_products as $product){
-                echo "<div>" . $product->post_title . "</div>";
+                echo "<div class='products hidden'>" . $product->post_title . "</div>";
             }
             
             echo "<div style='display: flex;'>
@@ -60,10 +60,7 @@
                         <input name=id type=hidden value=$order->id>
                         <button name=save>Save</button>
                     </form>
-                </div>";
-
-                
-                
+                </div>";                
             }
             
     }
