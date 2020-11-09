@@ -6,6 +6,9 @@
     Author: Niklas Borg & Amanda Jakobsson
 */
 
+if(!defined('ABSPATH')){
+    exit;
+}
     // Query
     function input_cart() {
         global $wpdb;
@@ -127,19 +130,6 @@
         register_widget('ow_widget');
     }
 
-    // Deactivate
-    function deactivation() {
-        global $wpdb;
-        $table_name            = $wpdb->prefix . "add_to_cart";
-        $table_name_order      = $wpdb->prefix . "order";
-        $table_name_order_post = $wpdb->prefix . "order_post";
-        $wpdb->query("DROP TABLE IF EXISTS $table_name_order_post");
-        $wpdb->query("DROP TABLE IF EXISTS $table_name");
-        $wpdb->query("DROP TABLE IF EXISTS $table_name_order");
-        
-    }
-
-
     // Load scripts
     require_once(plugin_dir_path(__FILE__). '/includes/order-scripts.php');
    
@@ -158,8 +148,9 @@
     //Load Meta Boxes
     require_once(plugin_dir_path(__FILE__). '/includes/meta_boxes.php');
 
-    // Load Deactivation
-    // require_once(plugin_dir_path(__FILE__). '/includes/deactivation.php');
+   // Load Deactivation
+    require_once(plugin_dir_path(__FILE__). '/includes/deactivation.php');
+    register_deactivation_hook(__FILE__, 'deactivation');
     
     add_filter('the_content', 'add_to_cart');
   
@@ -170,7 +161,7 @@
     register_activation_hook(__FILE__, 'add_to_cart_register');
     register_activation_hook(__FILE__, 'order_register');
     register_activation_hook(__FILE__, 'order_post_register');
-    register_deactivation_hook(__FILE__, 'deactivation');
+    
     
 
 
