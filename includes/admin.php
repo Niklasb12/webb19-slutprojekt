@@ -25,25 +25,31 @@
        
         foreach($results_orders as $order){
             
-            $results_products = $wpdb->get_results("SELECT wp_posts.post_title FROM wp_order_post INNER JOIN wp_posts ON wp_order_post.post_id=wp_posts.id WHERE $order->id=wp_order_post.order_id");
+            $results_products = $wpdb->get_results("SELECT wp_posts.post_title, wp_postmeta.meta_value FROM wp_order_post INNER JOIN wp_posts ON wp_order_post.post_id=wp_posts.id INNER JOIN wp_postmeta ON wp_order_post.post_id = wp_postmeta.post_id WHERE $order->id=wp_order_post.order_id AND wp_postmeta.meta_key = 'price'");
+
             $items_array = array();
+            $price = array();
+
             foreach($results_products as $product){
                array_push($items_array, $product->post_title);
+               array_push($price, intval($product->meta_value));
             }
+
+            $total_price = array_sum($price);
             
-            echo "<div style='display: flex;'>
-            <div class='order-div' style='display: flex; flex-direction: column; margin: 40px;'>
+            echo "<div class='admin-order-wrapper'>
+            <div class='order-div'>
             <p>Order Number: &nbsp" . $order->id . "</p> 
-            <p class='show-items'> Order Items </p>
-            <div class='products hidden'>" . join("<br>", $items_array) . "</div>"
+            <p class='show-items'> ▼ Order Items </p>
+            <div class='products hidden'>" . join("<br>", $items_array) . "<br><p>Total Price: " . $total_price . "</p></div>"
             . $order->order_date . "<br>";
             
             if($order->order_status == "recieved" || $order->order_status == "shipped") {
-                echo "<p style='color: blue;'>" . $order->order_status . "</p> <br>";
+                echo "<p class='order-status--blue'>" . $order->order_status . "</p> <br>";
             }elseif($order->order_status == "canceled") {
-                echo "<p style='color: red;'>" . $order->order_status . "</p> <br>";
+                echo "<p class='order-status--red'>" . $order->order_status . "</p> <br>";
             }else{
-                echo "<p style='color: green;'>" . $order->order_status . "</p> <br>";
+                echo "<p class='order-status--green'>" . $order->order_status . "</p> <br>";
             }
 
             

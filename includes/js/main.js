@@ -8,6 +8,11 @@ window.addEventListener("load", () => {
         item.addEventListener("click", function() {
             let product = products[i];
             product.classList.toggle("hidden");
+            if (product.classList.contains("hidden")) {
+                item.innerHTML = "▼ Order Items"
+            } else {
+                item.innerHTML = "▲ Order Items"
+            }
         })
     }
 })

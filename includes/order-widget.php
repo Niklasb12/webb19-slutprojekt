@@ -39,7 +39,7 @@
             }
         $total_price = array_sum($total);
 
-        echo "<div style='border-top: 1px black solid; width: 10%;'><p>Total: " . $total_price . " Kr</p></div>";
+        echo "<div class='total-price'><p>Total: " . $total_price . " Kr</p></div>";
 
         echo "<form method=POST>
         <button> Order </button>

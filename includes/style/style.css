@@ -2,7 +2,48 @@
   plugin style
 */
 
-.SidebarWidget {
-  position: sticky;
-  background-color: white;
+
+/* Admin.php */
+
+.order-div {
+    display: flex;
+    flex-direction: column;
+    margin: 40px;
+}
+
+.show-items {
+    cursor: pointer;
+}
+
+.admin-order-wrapper {
+    display: flex;
+}
+
+.order-status--blue {
+    color: blue;
+}
+
+.order-status--green {
+    color: green;
+}
+
+.order-status--red {
+    color: red;
+}
+
+
+/* order-widget.php */
+
+.total-price {
+    width: 10%;
+    border-top: 1px black solid;
+}
+
+.widget_ow_order {
+    position: fixed;
+    top: 0;
+    left: 1500px;
+    width: 100%;
+    min-height: 200px;
+    margin-top: 295px!important;
 }
