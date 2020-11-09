@@ -51,10 +51,7 @@
                         <input name=id type=hidden value=$order->id>
                         <button name=save>Save</button>
                     </form>
-                </div>";
-
-                
-                
+                </div>";                
             }
             
     }
