@@ -29,7 +29,7 @@
 
         $total = array();
         
-        echo "<h4>" . $instance["title"] . "</h4>";
+        echo "<h4 class='order-title'>" . $instance["title"] . "</h4>";
         if(!empty($results_cart)) {
             foreach($results_cart as $cart) {
                 echo "<div>

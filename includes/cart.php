@@ -31,8 +31,8 @@ function sidebar($content){
     global $wpdb;
     $id = get_the_ID();
 
-    if(is_archive() && in_the_loop() && is_main_query() ){
-            return $content .  get_sidebar();
+    if(is_archive() && is_main_query() ){
+            return $content .  get_sidebar('primary');
             
     }
     return $content;
