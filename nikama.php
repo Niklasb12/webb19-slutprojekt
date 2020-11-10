@@ -1,14 +1,12 @@
 <?php
 /*
-    Plugin Name: Products
+    Plugin Name: Nikama Ordersystem
     Descripton: Ordersystem for products
     Version: 2.0
     Author: Niklas Borg & Amanda Jakobsson
 */
 
-if(!defined('ABSPATH')){
-    exit;
-}
+    defined('ABSPATH') or die ('You have entered nikamas secret code');
 
     // Load scripts
     require_once(plugin_dir_path(__FILE__). '/includes/order-scripts.php');

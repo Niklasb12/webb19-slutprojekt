@@ -8,7 +8,6 @@
         $table_name_order_post = $wpdb->prefix . "order_post";
         $wpdb->query("DROP TABLE IF EXISTS $table_name_order_post");
         $wpdb->query("DROP TABLE IF EXISTS $table_name");
-        $wpdb->query("DROP TABLE IF EXISTS $table_name_order");
-        
+        $wpdb->query("DROP TABLE IF EXISTS $table_name_order"); 
     }
     

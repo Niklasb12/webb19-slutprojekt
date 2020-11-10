@@ -4,17 +4,13 @@
 */
 
 
-    // Hook for adding admin menus
     add_action('admin_menu', 'mt_add_pages');
 
-    // action function for above hook
     function mt_add_pages() {
 
-        // Add a new top-level menu (ill-advised):
         add_menu_page(__('Order status','menu-test'), __('Order status','menu-test'), 'manage_options', 'order-status', 'order_status_page' );
     }
 
-    // mt_toplevel_page() displays the page content for the custom Test Toplevel menu
     function order_status_page() {
         global $wpdb;
         echo "<h1> Orders </h1>";
@@ -26,8 +22,8 @@
             
             $results_products = $wpdb->get_results("SELECT wp_posts.post_title, wp_postmeta.meta_value FROM wp_order_post INNER JOIN wp_posts ON wp_order_post.post_id=wp_posts.id INNER JOIN wp_postmeta ON wp_order_post.post_id = wp_postmeta.post_id WHERE $order->id=wp_order_post.order_id AND wp_postmeta.meta_key = 'price'");
 
-            $items_array = array();
-            $price = array();
+            $items_array      = array();
+            $price            = array();
 
             foreach($results_products as $product){
                array_push($items_array, $product->post_title);
@@ -82,5 +78,3 @@
     }
 
     add_action('init', 'update_order_status');
-
-?>

@@ -8,11 +8,10 @@
     function __construct(){
 
         parent::__construct(
-            // Base ID of your widget
             'ow_order', 
-            // Widget name will appear in UI
+
             'Order widget',
-            // Widget description
+
             array('description' =>'order widget') 
         );
 
@@ -26,8 +25,7 @@
 
         $results_cart = $wpdb->get_results("SELECT wp_posts.post_title, wp_postmeta.meta_value FROM wp_add_to_cart INNER JOIN wp_posts ON wp_add_to_cart.post_id = wp_posts.ID INNER JOIN wp_postmeta ON wp_add_to_cart.post_id = wp_postmeta.post_id WHERE wp_add_to_cart.user_id = $user_id AND wp_postmeta.meta_key = 'price'");
 
-
-        $total = array();
+        $total        = array();
         
         echo "<h4 class='order-title'>" . $instance["title"] . "</h4>";
         if(!empty($results_cart)) {
@@ -45,23 +43,21 @@
         <button> Order </button>
         <input type=hidden name=order value=$id></input>
         </form>";
-    }else{
+        }else{
         echo "<p> empty </p>";
-    }
-        
-        
+        }
         echo $args['after_widget'];
     }
     
-     function form($instance) {
+    function form($instance) {
         printf('<input type="text" name="%s" value="' . $instance["title"] . '">',
         $this->get_field_name("title")
         );
-     }
+    }
 
 }
     function ow_init_widget(){
         register_widget('ow_widget');
     }
+    
     add_action('widgets_init', 'ow_init_widget');
-?>
