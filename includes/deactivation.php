@@ -1,5 +1,7 @@
 <?php
 
+    defined('ABSPATH') or die ('You have entered nikamas secret code');
+
 // Deactivate
     function deactivation() {
         global $wpdb;

@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or die ('You have entered nikamas secret code');
+
 function cpt_order() {
     register_post_type(
         'cpt_order', array(

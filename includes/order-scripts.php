@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or die ('You have entered nikamas secret code');
+
 //Add Scripts
 function order_add_scripts(){
     wp_enqueue_style('order-main-style', plugins_url('style/style.css', __FILE__));

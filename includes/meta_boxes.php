@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') or die ('You have entered nikamas secret code');
+
 function save_products($product_id){
     if(!empty($_POST['price'])){
         if($_POST['price'] < 0) {

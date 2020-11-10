@@ -1,12 +1,16 @@
 <?php
 
+defined('ABSPATH') or die ('You have entered nikamas secret code');
+
 function input_cart() {
     global $wpdb;
     if(isset($_POST['add_to_cart'])){
         $post_id = $_POST['id'];
         $user_id = get_current_user_id();
 
-        $wpdb->query("INSERT INTO wp_add_to_cart(user_id, post_id) VALUES ($user_id, $post_id)");
+        $query = $wpdb->prepare("INSERT INTO wp_add_to_cart(user_id, post_id) VALUES (%s, %s)", $user_id, $post_id);
+        
+        $wpdb->query($query);
     }
 }
 
@@ -26,15 +30,7 @@ function add_to_cart($content){
 }
 
 
-function sidebar($content){
-    global $wpdb;
-    $id = get_the_ID();
 
-    if(is_archive() && is_main_query() ){
-            return $content;        
-    }
-    return $content;
-}
 
 add_action('init', 'input_cart');
 

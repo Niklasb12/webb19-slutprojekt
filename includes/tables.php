@@ -1,4 +1,7 @@
 <?php
+
+defined('ABSPATH') or die ('You have entered nikamas secret code');    
+
     // Tables
     function add_to_cart_register(){
         global $wpdb;

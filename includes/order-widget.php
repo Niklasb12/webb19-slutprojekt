@@ -3,6 +3,8 @@
     Order widget
 */
 
+defined('ABSPATH') or die ('You have entered nikamas secret code');
+
  class ow_widget extends WP_Widget{
     public $order_widget;
     function __construct(){
@@ -50,8 +52,8 @@
     }
     
     function form($instance) {
-        printf('<input type="text" name="%s" value="' . $instance["title"] . '">',
-        $this->get_field_name("title")
+        printf('<input type="text" name="%s" value="%s">',
+        $this->get_field_name("title"), $instance["title"]
         );
     }
 

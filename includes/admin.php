@@ -2,7 +2,7 @@
 /*
     Admin Menu
 */
-
+defined('ABSPATH') or die ('You have entered nikamas secret code');
 
     add_action('admin_menu', 'mt_add_pages');
 
@@ -72,8 +72,10 @@
             $select_option = $_POST['select_order_status'];
             $id = $_POST['id'];
             
-            $wpdb->query("UPDATE wp_order
+            $query = $wpdb->prepare("UPDATE wp_order
             SET wp_order.order_status = '$select_option' WHERE $id = wp_order.id ");
+
+            $wpdb->query($query);
         }
     }
 
