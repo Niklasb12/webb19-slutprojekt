@@ -16,9 +16,6 @@ if(!defined('ABSPATH')){
     //  Load Widget
     require_once(plugin_dir_path(__FILE__). '/includes/order-widget.php');
 
-    //Load Sidebar
-    require_once(plugin_dir_path(__FILE__). '/includes/sidebar.php');
-
     //Load Admin Menu
     require_once(plugin_dir_path(__FILE__). '/includes/admin.php');
 

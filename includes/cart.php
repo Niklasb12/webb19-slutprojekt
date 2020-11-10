@@ -32,14 +32,13 @@ function sidebar($content){
     $id = get_the_ID();
 
     if(is_archive() && is_main_query() ){
-            return $content .  get_sidebar('primary');
+            return $content;
             
     }
     return $content;
 }
 
 add_filter('the_content', 'add_to_cart');
-add_filter('the_content', 'sidebar');
 
 
 
