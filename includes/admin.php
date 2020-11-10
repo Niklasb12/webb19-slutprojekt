@@ -17,7 +17,6 @@
     // mt_toplevel_page() displays the page content for the custom Test Toplevel menu
     function order_status_page() {
         global $wpdb;
-        // echo "<h2>" . __( 'Test Toplevel', 'menu-test' ) . "</h2>";
         echo "<h1> Orders </h1>";
         $results_orders = $wpdb->get_results("SELECT * FROM wp_order ORDER BY wp_order.order_date DESC LIMIT 10");
 

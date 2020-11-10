@@ -45,6 +45,8 @@
         <button> Order </button>
         <input type=hidden name=order value=$id></input>
         </form>";
+    }else{
+        echo "<p> empty </p>";
     }
         
         
