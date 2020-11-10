@@ -57,10 +57,10 @@
             echo "
                 <form method=POST>
                     <select name=select_order_status>
-                        <option value=recieved  " . ($_POST['select_order_status'] == 'recieved' ? 'selected': '') ."> recieved </option>
-                        <option value=canceled  " . ($_POST['select_order_status'] == 'canceled' ? 'selected': '') ."> canceled </option>
-                        <option value=shipped   " . ($_POST['select_order_status'] == 'shipped' ? 'selected': '') ."> shipped </option>
-                        <option value=delivered " . ($_POST['select_order_status'] == 'delivered' ? 'selected': '') ."> delivered </option>
+                        <option value=recieved  " . ($order->order_status == 'recieved' ? 'selected': '') ."> recieved </option>
+                        <option value=canceled  " . ($order->order_status == 'canceled' ? 'selected': '') ."> canceled </option>
+                        <option value=shipped   " . ($order->order_status == 'shipped' ? 'selected': '') ."> shipped </option>
+                        <option value=delivered " . ($order->order_status == 'delivered' ? 'selected': '') ."> delivered </option>
                     </select> 
                     <br>
                     <br>                                   
