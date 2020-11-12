@@ -17,9 +17,10 @@ function save_products($product_id){
     }
 }
 
+
 function post_meta_box_price($product){
-    printf('<input type="text" name="price" value="%s">',
-    get_post_meta($product->ID, 'price', true )
+    printf('<input type="text" name="%s" value="%s">',
+     'price', get_post_meta($product->ID, 'price', true )
     );
 }
 

@@ -7,7 +7,7 @@
             
             $user_id       = get_current_user_id();
             
-            $query = $wpdb->prepare("INSERT INTO wp_order(user_id, order_date, order_status) VALUES ($user_id, NOW(), 'recieved')");
+            $query = $wpdb->prepare("INSERT INTO wp_order(user_id, order_date, order_status) VALUES (%s, NOW(), %s)", $user_id, 'recieved');
 
             $wpdb->query($query);
 
@@ -20,14 +20,13 @@
             }
 
             foreach($results as $result) {
-
-                $query = $wpdb->prepare("INSERT INTO wp_order_post(order_id, post_id) VALUES ($order_id, $result->post_id)");
+                 
+                $query = $wpdb->prepare("INSERT INTO wp_order_post(order_id, post_id) VALUES (%s, %s)", $order_id, $result->post_id);
 
                 $wpdb->query($query);
             }
   
-            
-            $query = $wpdb->prepare("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.user_id= $user_id");
+            $query = $wpdb->prepare("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.user_id= %s", $user_id );
 
             $wpdb->query($query);
 

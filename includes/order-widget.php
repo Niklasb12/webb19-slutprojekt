@@ -25,7 +25,7 @@ defined('ABSPATH') or die ('You have entered nikamas secret code');
         $id = get_the_ID();
         $user_id = get_current_user_id(); 
 
-        $results_cart = $wpdb->get_results("SELECT wp_posts.post_title, wp_postmeta.meta_value FROM wp_add_to_cart INNER JOIN wp_posts ON wp_add_to_cart.post_id = wp_posts.ID INNER JOIN wp_postmeta ON wp_add_to_cart.post_id = wp_postmeta.post_id WHERE wp_add_to_cart.user_id = $user_id AND wp_postmeta.meta_key = 'price'");
+        $results_cart = $wpdb->get_results("SELECT wp_posts.post_title, wp_postmeta.meta_value, wp_add_to_cart.id FROM wp_add_to_cart INNER JOIN wp_posts ON wp_add_to_cart.post_id = wp_posts.ID INNER JOIN wp_postmeta ON wp_add_to_cart.post_id = wp_postmeta.post_id WHERE wp_add_to_cart.user_id = $user_id AND wp_postmeta.meta_key = 'price'");
 
         $total        = array();
         
@@ -34,7 +34,11 @@ defined('ABSPATH') or die ('You have entered nikamas secret code');
             foreach($results_cart as $cart) {
                 echo "<div>
                 <p>" . $cart->post_title . " " . $cart->meta_value .  " Kr</p>
-                </div>";
+                </div>
+                <form method=POST>
+                <button name=delete> Delete </button>
+                <input type=hidden name=id value=$cart->id></input>
+                </form>";
                 array_push($total, intval($cart->meta_value));
             }
         $total_price = array_sum($total);
@@ -50,7 +54,7 @@ defined('ABSPATH') or die ('You have entered nikamas secret code');
         }
         echo $args['after_widget'];
     }
-    
+
     function form($instance) {
         printf('<input type="text" name="%s" value="%s">',
         $this->get_field_name("title"), $instance["title"]
@@ -58,8 +62,20 @@ defined('ABSPATH') or die ('You have entered nikamas secret code');
     }
 
 }
+
+function deleteCartItem(){
+    global $wpdb;
+    if(isset($_POST['delete'])){
+        $id = $_POST['id'];
+
+       $query = $wpdb->prepare("DELETE FROM wp_add_to_cart WHERE wp_add_to_cart.id=%s", $id);
+
+       $wpdb->query($query);
+    }
+}
     function ow_init_widget(){
         register_widget('ow_widget');
     }
     
+    add_action('init', 'deleteCartItem');
     add_action('widgets_init', 'ow_init_widget');

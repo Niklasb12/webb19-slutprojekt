@@ -4,8 +4,6 @@
 */
 defined('ABSPATH') or die ('You have entered nikamas secret code');
 
-    add_action('admin_menu', 'mt_add_pages');
-
     function mt_add_pages() {
 
         add_menu_page(__('Order status','menu-test'), __('Order status','menu-test'), 'manage_options', 'order-status', 'order_status_page' );
@@ -65,7 +63,7 @@ defined('ABSPATH') or die ('You have entered nikamas secret code');
             </div>";                
         }   
     }
-
+    
     function update_order_status() {
         global $wpdb;
         if(isset($_POST['save'])){
@@ -73,10 +71,11 @@ defined('ABSPATH') or die ('You have entered nikamas secret code');
             $id = $_POST['id'];
             
             $query = $wpdb->prepare("UPDATE wp_order
-            SET wp_order.order_status = '$select_option' WHERE $id = wp_order.id ");
+            SET wp_order.order_status = %s WHERE %s = wp_order.id ", $select_option, $id );
 
             $wpdb->query($query);
         }
     }
 
     add_action('init', 'update_order_status');
+    add_action('admin_menu', 'mt_add_pages');
