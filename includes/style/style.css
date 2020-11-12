@@ -38,3 +38,25 @@
     width: 35%;
     border-top: 1px black solid;
 }
+
+.delete {
+    background: none;
+    border: none;
+    text-decoration: none;
+    margin-left: 10px;
+    padding: 0;
+}
+
+.delete:hover {
+    background: none !important;
+}
+
+.cart {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.cart_item {
+    margin: 0;
+}

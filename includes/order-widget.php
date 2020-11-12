@@ -32,13 +32,13 @@ defined('ABSPATH') or die ('You have entered nikamas secret code');
         echo "<h4 class='order-title'>" . $instance["title"] . "</h4>";
         if(!empty($results_cart)) {
             foreach($results_cart as $cart) {
-                echo "<div>
-                <p>" . $cart->post_title . " " . $cart->meta_value .  " Kr</p>
-                </div>
+                echo "<div class='cart'>
+                <p class='cart_item'>" . $cart->post_title . " " . $cart->meta_value .  " Kr</p>
                 <form method=POST>
-                <button name=delete> Delete </button>
+                <button class='delete' name=delete> &#128465 </button>
                 <input type=hidden name=id value=$cart->id></input>
-                </form>";
+                </form>
+                </div>";
                 array_push($total, intval($cart->meta_value));
             }
         $total_price = array_sum($total);
